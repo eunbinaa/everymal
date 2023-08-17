@@ -26,7 +26,7 @@ public class HosMyReplyDAOImpl implements HosMyReplyDAO{
          int section = pagingMap.get("section");
          int pageNum = pagingMap.get("pageNum");
          Map map = new HashMap();
-         //¿ø·¡ ¿©±â ¾ø´ø ºÎºĞÀÎµ¥ mappers¿¡¼­ Äõ¸®¹®¿¡ º¯¼ö 2°³ ÀÌ»ó Àü´ŞÇÏ±â À§ÇØ¼­ HashMap map ¸¸µé¾î¼­ °Å±â¿¡ ´Ù ³Ö¾îÁÜ. ±×·¡¼­ º¯¼ö 3°³ º¸³¿
+         //ì›ë˜ ì—¬ê¸° ì—†ë˜ ë¶€ë¶„ì¸ë° mappersì—ì„œ ì¿¼ë¦¬ë¬¸ì— ë³€ìˆ˜ 2ê°œ ì´ìƒ ì „ë‹¬í•˜ê¸° ìœ„í•´ì„œ HashMap map ë§Œë“¤ì–´ì„œ ê±°ê¸°ì— ë‹¤ ë„£ì–´ì¤Œ. ê·¸ë˜ì„œ ë³€ìˆ˜ 3ê°œ ë³´ëƒ„
          map.put("section", section);
          map.put("pageNum", pageNum);
          map.put("hos_id", hos_id);
@@ -43,11 +43,22 @@ public class HosMyReplyDAOImpl implements HosMyReplyDAO{
 		return reply_count;
 	}
 
+
+
+@Override
+   public String selectReply(String a_code) throws DataAccessException {
+       String q_code=sqlSession.selectOne("mapper.hosMyReply.selectReply", a_code);
+      return q_code;
+   }
+
+
+
+	
 	@Override
 	public void deleteReply(String[] items) throws DataAccessException {
 		String[]a_code=items;
 		if(a_code==null || a_code.length==0) {
-			 System.out.println("»èÁ¦ ¿äÃ»ÇÒ ¸®ºä¸¦ ¼±ÅÃ ¾È ÇÔ");
+			 System.out.println("ì‚­ì œ ìš”ì²­í•  ë¦¬ë·°ë¥¼ ì„ íƒ ì•ˆ í•¨");
 		 }else {			 		 		 			
 			 Map map=new HashMap();
 			 map.put("array", a_code);
