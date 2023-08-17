@@ -69,7 +69,7 @@
             <div class="tab_nav">
               <ul class="tab_Btns">
                 <li class="tBtn tBtn1 choiceTabNav"><a href="${contextPath }/administrator/memberList.do"><span>회원관리</span></a></li>
-                <li class="tBtn tBtn2 notChoice"><a href="${contextPath }/administrator/hospitalRegi.do"><span>병원등록요청</span></a></li>
+                <li class="tBtn tBtn2 notChoice"><a href="${contextPath }/administrator/hopitalRegi.do"><span>병원등록요청</span></a></li>
                 <li class="tBtn tBtn3 notChoice"><a href="${contextPath }/administrator/reqDelReviewList.do"><span>리뷰관리</span></a></li>
                 </li>
 
@@ -314,7 +314,7 @@
 
 
 </script>
-<!-- 템플릿 정의 -->
+<!— 템플릿 정의 —>
 
 
       </html>
