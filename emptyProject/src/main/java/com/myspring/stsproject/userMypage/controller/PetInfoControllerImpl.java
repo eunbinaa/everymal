@@ -1,12 +1,17 @@
 package com.myspring.stsproject.userMypage.controller;
 
+import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,35 +81,61 @@ public class PetInfoControllerImpl implements PetInfoController{
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8;");
 		String viewName=(String) request.getAttribute("viewName");
-		PrintWriter out = response.getWriter();
+		
 		
 		HttpSession session = request.getSession();
 		String user_code=(String) session.getAttribute("user_code");
-		
-				
-		String pet_code=request.getParameter("pet_code");
-		String pet_name=request.getParameter("pet_name");
-		int pet_age=Integer.parseInt(request.getParameter("pet_age"));
-		String pet_sex=request.getParameter("pet_sex");
-		String pet_types=request.getParameter("pet_types");
-	    String pet_number=request.getParameter("pet_number");
-		String b_type=request.getParameter("b_type");
-		float pet_weight=Float.parseFloat(request.getParameter("pet_weight"));
-		String pet_etc=request.getParameter("pet_etc");
-		System.out.println(pet_code);
-		System.out.println(pet_name);
-		petInfoVO=new PetInfoVO(pet_code, pet_name, pet_age, pet_sex, pet_types, pet_number, b_type, pet_weight, pet_etc);
-		
-		
-		petInfoDAO.updatePet(petInfoVO);
-		out=response.getWriter();
-		out.print("<script>");
-		out.print("alert('동물을 수정했습니다');");
-		out.print("location.href='"+request.getContextPath()+"/user_Page/myPetList.do';");
-		out.print("</script>");
+		//
+		 BufferedReader reader = request.getReader();
+		    StringBuilder sb = new StringBuilder();
+		    String line;
+		    while ((line = reader.readLine()) != null) {
+		        sb.append(line);
+		    }
+		    String jsonData = sb.toString();
+
+		    // JSON 데이터를 Map으로 파싱
+		    ObjectMapper objectMapper = new ObjectMapper();
+		    List<Map<String, Object>> petInfoList = objectMapper.readValue(jsonData, List.class);
+
+		    // 각 JSON 객체를 처리
+		    for (Map<String, Object> petInfo : petInfoList) {
+		        String pet_code = (String) petInfo.get("pet_code");
+		        String pet_name = (String) petInfo.get("pet_name");
+		        int pet_age = Integer.parseInt(petInfo.get("pet_age").toString());
+		        String pet_sex = (String) petInfo.get("pet_sex");
+		        String pet_types = (String) petInfo.get("pet_types");
+		        String pet_number = (String) petInfo.get("pet_number");
+		        String b_type = (String) petInfo.get("b_type");
+		        float pet_weight = Float.parseFloat(petInfo.get("pet_weight").toString());
+		        String pet_etc = (String) petInfo.get("pet_etc");
+		        System.out.println("펫코드: " + pet_code);
+		        System.out.println("이름: " + pet_name);
+		        System.out.println("나이: " + pet_age);
+		        System.out.println("성별: " + pet_sex);
+		        System.out.println("타입: " + pet_types);
+		        System.out.println("번호: " + pet_number);
+		        System.out.println("혈액평: " + b_type);
+		        System.out.println("무게: " + pet_weight);
+		        System.out.println("기타: " + pet_etc);
+		        // 이제 각각의 필드 값을 이용하여 업데이트 로직을 수행
+		        petInfoVO=new PetInfoVO(pet_code, pet_name, pet_age, pet_sex, pet_types, pet_number, b_type, pet_weight, pet_etc);
+		        petInfoDAO.updatePet(petInfoVO);
+		        // ...
+		       
+		    }
+		    PrintWriter out = response.getWriter();
+		    
+			out.print("<script>");
+			out.print("alert('수정되었습니다.');");
+			out.print("location.href='"+request.getContextPath()+"/user_Page/myPetList.do';");
+			out.print("</script>");
 		
 		return null;
+		
+		
 	}
+	
 
 	@Override
 	@RequestMapping(value = "/user_Page/addPet.do", method = RequestMethod.POST)
