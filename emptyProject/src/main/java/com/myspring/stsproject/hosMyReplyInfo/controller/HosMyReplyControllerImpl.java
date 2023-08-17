@@ -61,7 +61,7 @@ public class HosMyReplyControllerImpl implements HosMyReplyController {
 		model.addAttribute("hos_code",hos_code);
 		
 		
-		System.out.println("hos¾ÆÀÌµğ ºÒ·¯¿Ô³ª?>>>>"+ hos_id);
+		System.out.println("hosì•„ì´ë”” ë¶ˆëŸ¬ì™”ë‚˜?>>>>"+ hos_id);
 		hosMypageInfoVO =hosmypageinfoService.selecthosInfo(hos_id);
 		String _section=request.getParameter("section");
 		String _pageNum=request.getParameter("pageNum");
@@ -74,7 +74,7 @@ public class HosMyReplyControllerImpl implements HosMyReplyController {
 		hosReplyMap.put("section", section);
 		hosReplyMap.put("pageNum", pageNum);
 		int reply_count=hosMyReplyService.replyCount(hos_id);
-		System.out.println(hos_id + " °¡ ÀÛ¼ºÇÑ "+reply_count +"°³ÀÇ ´äº¯ÀÌ Á¶È¸µÊ!!!");
+		System.out.println(hos_id + " ê°€ ì‘ì„±í•œ "+reply_count +"ê°œì˜ ë‹µë³€ì´ ì¡°íšŒë¨!!!");
 		
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("hosReplyMap", hosReplyMap); 
@@ -84,6 +84,19 @@ public class HosMyReplyControllerImpl implements HosMyReplyController {
 		return mav;
 	}
 
+@Override
+   @RequestMapping(value = "/hos_MyReplyInfo/viewReply.do", method = RequestMethod.GET)
+   public ModelAndView viewReply(HttpServletRequest request, HttpServletResponse response) throws Exception {
+      HttpSession session=request.getSession();
+      String hos_id=(String)session.getAttribute("log_id");
+       String a_code=request.getParameter("a_code");
+      String q_code=hosMyReplyService.viewReply(a_code);   
+      ModelAndView redirectMav = new ModelAndView("redirect:/qna_Board/viewArticle.do?q_code="+q_code);
+      return redirectMav;
+   }
+
+
+	
 	@Override
 	@RequestMapping(value = "/hos_MyReplyInfo/hosReplyDel.do", method = RequestMethod.GET)
 	public ModelAndView hosReplyDel(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -98,7 +111,7 @@ public class HosMyReplyControllerImpl implements HosMyReplyController {
 		
 		if(items==null){
 			out.print("<script>");
-			out.print("alert('»èÁ¦ÇÒ ´äº¯À» ¼±ÅÃÇØÁÖ¼¼¿ä!');");
+			out.print("alert('ì‚­ì œí•  ë‹µë³€ì„ ì„ íƒí•´ì£¼ì„¸ìš”!');");
 			out.print("location.href='" +request.getContextPath()+ "/hos_MyReplyInfo/listMyReply.do" + "';");
 			out.print("</script>");
 			out.flush();	
@@ -106,11 +119,11 @@ public class HosMyReplyControllerImpl implements HosMyReplyController {
 		}else {
 			
 			for(int i=0; i<items.length; i++) {
-    			System.out.println( "items(´äº¯µî·Ï¹øÈ£) : " + items[i]);
+    			System.out.println( "items(ë‹µë³€ë“±ë¡ë²ˆí˜¸) : " + items[i]);
     		}
 			hosMyReplyService.delReply(items);
 			out.print("<script>");
-			out.print("alert('´äº¯ÀÌ »èÁ¦µÇ¾ú½À´Ï´Ù.');");
+			out.print("alert('ë‹µë³€ì´ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.');");
 			out.print("location.href='" +request.getContextPath() + "/hos_MyReplyInfo/listMyReply.do" + "';");
 			ModelAndView redirectMav = new ModelAndView("redirect:/hos_MyReplyInfo/listMyReply.do");
 			return redirectMav;
