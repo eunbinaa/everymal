@@ -28,15 +28,47 @@
           }
 
 
-          function submitForm() {
+         /* function submitForm() {
             var forms = document.getElementsByClassName("myPetInfoForm");
             if (forms.length > 0) {
               var form = forms[0];
               form.submit();
             }
           }
-          
-                   
+         */ 
+
+
+        function submitForm() {
+        	  var forms = document.getElementsByClassName("myPetInfoForm");
+        	  if (forms.length > 0) {
+        	    var formData = [];
+        	    for (let i = 0; i < forms.length; i++) {
+        	      var form = forms[i];
+        	      var formDataItem = {
+        	        pet_name: form.pet_name.value,
+        	        pet_code: form.pet_code.value,
+        	        pet_age: form.pet_age.value,
+        	        pet_sex:form.pet_sex.value,
+        	        pet_types:form.pet_types.value,
+        	        pet_number:form.pet_number.value,
+        	        b_type:form.b_type.value,
+        	        pet_weight:form.pet_weight.value,
+        	        pet_etc:form.pet_etc.value
+        	        // ... 나머지 필드들도 추가
+        	      };
+        	      formData.push(formDataItem);
+        	    }
+        	    // JSON 형식으로 변환
+        	    var jsonData = JSON.stringify(formData);
+
+        	    // Ajax 요청 전송
+        	    var xhr = new XMLHttpRequest();
+        	    xhr.open("POST", "http://127.0.0.1:8090/stsproject/user_Page/modPet.do", true);
+        	    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        	    xhr.send(jsonData);
+        	  }
+        	}
+
 
           function delPetInfo(url, pet_code) {
             let d_form = document.createElement("form"); //createElement=>태그를 만들어준다
