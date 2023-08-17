@@ -11,5 +11,7 @@ public interface HosMyReplyController {
 
 	public ModelAndView listMyReply (Model model, HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ModelAndView hosReplyDel (HttpServletRequest request, HttpServletResponse response) throws Exception;
-	
+	public ModelAndView viewReply (HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+
 }
