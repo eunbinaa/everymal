@@ -44,4 +44,11 @@ public class HosMyReplyServiceImpl implements HosMyReplyService {
 		
 	}
 
+	@Override
+       public String viewReply(String a_code) throws DataAccessException {
+      String q_code=hosMyReplyDAO.selectReply(a_code);
+      return q_code;
+   }
+
+
 }
