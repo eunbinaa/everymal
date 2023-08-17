@@ -66,11 +66,14 @@ public class PetInfoControllerImpl implements PetInfoController{
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8;");
 		HttpSession session = request.getSession();
-		String user_code=(String) session.getAttribute("user_code");		
+		String user_code=(String) session.getAttribute("user_code");
+		String user_id= (String)session.getAttribute("log_id");
+		userVO=userService.calluserInfo(user_id);
 		System.out.println("user_code가 뭐냐>>>>>:"+user_code);
 		model.addAttribute("user_code",user_code); //jsp로 값 넘겨줘야 할 때 사용
 		List<PetInfoVO> petList=petInfoDAO.selectPetList(user_code);		
 		mav.addObject("petList", petList);
+		mav.addObject("userVO", userVO);
 		return mav;
 	}
 
